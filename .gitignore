@@ -29,6 +29,5 @@ coverage
 
 #Release
 release
-engine/ffmpeg.exe
 buildicon/icons
 ui
