@@ -1,0 +1,16 @@
+{
+    "晴":"Sun",
+    "阴天":"CloudyDay",
+    "雾":"Fog",
+    "大暴雨":"HeavyRain",
+    "大雨":"HeavyRain2",
+    "小雨":"LightRain",
+    "中雨":"ModerateRain",
+    "多云":"PartlyCloudy",
+    "暴雨":"Rainstorm",
+    "阵雨":"Shower",
+    "特大暴雨":"TorrentialRain",
+    "雷阵雨":"Thunderstorm",
+    "无图标的天气":"UnkonwWeather"
+}
+

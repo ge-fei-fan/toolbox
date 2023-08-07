@@ -1,0 +1,42 @@
+{
+    "productName": "toolbox",
+    "appId": "app.toolbox.desktop",
+    "fileAssociations": [
+      {
+        "ext": "torrent",
+        "mimeType": "application/x-bittorrent",
+        "name": "Torrent",
+        "role": "Viewer"
+      }
+    ],
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist-electron",
+      "dist"
+    ],
+    "win": {
+      "icon": "public/icon.ico", 
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "extraResources": {
+        "from": "./engine/",
+        "to": "./",
+        "filter": [
+          "**/*"
+        ]
+      }
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }

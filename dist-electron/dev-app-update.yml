@@ -1,0 +1,5 @@
+owner: ge-fei-fan
+repo: toolbox
+provider: github
+host: github.com
+updaterCacheDirName: toolbox-updater
