@@ -16,12 +16,14 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { data } = await github.repos.getLatestRelease({
+            const response = await github.repos.listReleases({
               owner: 'ge-fei-fan',
               repo: 'toolbox-server'
             });
-            const asset = data.assets.find(asset => asset.name === 'toolbox-server.exe');
+            const releases = response.data;
+            const latestRelease = releases[0];
+            const asset = latestRelease.assets.find(asset => asset.name === 'toolbox-server.exe');
             console.log(asset.browser_download_url);
     
       - name: Print latest release link
-        run: echo "Latest toolbox-server.exe link:${{ steps.get_release.outputs.result }}";
+        run: echo "Latest toolbox-server.exe link:${{ steps.get_release.outputs.result }}"
