@@ -2,9 +2,9 @@ name: Get latest toolbox-server
 
 on:
   push:
-    branches:
-      - main
-
+    tags:
+    - v*
+    
 jobs:
   get-latest-toolbox-server:
     runs-on: windows-latest
@@ -50,14 +50,21 @@ jobs:
 
       - name: Build for Windows
         run: yarn build-win
+        
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        shell: bash
+        
+      # 从该tag打上一个release标签(这里会output一些参数 后面才能使用)
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get-release.outputs.tag_name }}
-          release_name: Release ${{ steps.get-release.outputs.tag_name }}
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: ${{ steps.get_version.outputs.VERSION }}
           draft: false
           prerelease: false
 
