@@ -38,7 +38,7 @@ jobs:
 
       - name: Move toolbox-server.exe to engine directory
         run: |
-          move "toolbox-server.exe" "engine/"
+          move /Y "toolbox-server.exe" "engine/"
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
