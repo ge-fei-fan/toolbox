@@ -17,7 +17,9 @@ jobs:
           mkdir -p $HOME/bin
           curl -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe -o $HOME/bin/jq.exe
           chmod +x $HOME/bin/jq.exe
-          echo "::add-path::$HOME/bin"
+
+      - name: Add jq to PATH
+        run: echo "::set-env name=PATH::$HOME/bin;$PATH"
 
       - name: Get latest release
         id: get-release
