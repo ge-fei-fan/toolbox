@@ -10,17 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Get latest release
         id: get_release
         uses: actions/github-script@v5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const response = await github.repos.listReleases({
+            const { data: releases } = await octokit.rest.repos.listReleases({
               owner: 'ge-fei-fan',
               repo: 'toolbox-server'
             });
-            const releases = response.data;
             const latestRelease = releases[0];
             const asset = latestRelease.assets.find(asset => asset.name === 'toolbox-server.exe');
             console.log(asset.browser_download_url);
