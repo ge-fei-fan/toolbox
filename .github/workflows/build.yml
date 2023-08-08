@@ -1,0 +1,27 @@
+name: Get Latest Toolbox Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  get_latest_toolbox_server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get latest release
+        id: get_release
+        uses: actions/github-script@v5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data } = await github.repos.getLatestRelease({
+              owner: 'ge-fei-fan',
+              repo: 'toolbox-server'
+            });
+            const asset = data.assets.find(asset => asset.name === 'toolbox-server.exe');
+            console.log(asset.browser_download_url);
+    
+      - name: Print latest release link
+        run: echo "Latest toolbox-server.exe link:${{ steps.get_release.outputs.result }}";
