@@ -1,4 +1,4 @@
-name: Get Latest Toolbox Server
+name: Get latest toolbox-server
 
 on:
   push:
@@ -6,34 +6,30 @@ on:
       - main
 
 jobs:
-  get_latest_toolbox_server:
+  get-latest-toolbox-server:
     runs-on: windows-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm install @actions/github --no-optional
+      - name: Install jq
+        run: |
+          mkdir -p $HOME/bin
+          curl -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe -o $HOME/bin/jq.exe
+          chmod +x $HOME/bin/jq.exe
+          echo "::add-path::$HOME/bin"
 
       - name: Get latest release
-        id: get_release
+        id: get-release
         run: |
-          const { Octokit } = require("@octokit/core");
-          const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+          url="https://api.github.com/repos/ge-fei-fan/toolbox-server/releases/latest"
+          response=$(curl -s $url)
+          tag_name=$(echo $response | jq -r '.tag_name')
+          asset_url=$(echo $response | jq -r '.assets[] | select(.name | endswith(".exe")) | .browser_download_url')
+          echo "::set-output name=tag_name::$tag_name"
+          echo "::set-output name=asset_url::$asset_url"
 
-          const { data: releases } = await octokit.request('GET /repos/{owner}/{repo}/releases', {
-            owner: 'ge-fei-fan',
-            repo: 'toolbox-server'
-          });
-          const latestRelease = releases[0];
-          const asset = latestRelease.assets.find(asset => asset.name === 'toolbox-server.exe');
-          console.log(asset.browser_download_url);
-
-      - name: Print latest release link
-        run: echo "Latest toolbox-server.exe link:${{ steps.get_release.outputs.result }}"
+      - name: Download latest release
+        run: |
+          asset_url=$(echo "${{ steps.get-release.outputs.asset_url }}")
+          curl -L -o "toolbox-server.exe" "$asset_url"
