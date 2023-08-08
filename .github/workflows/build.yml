@@ -8,8 +8,6 @@ on:
 jobs:
   get-latest-toolbox-server:
     runs-on: windows-latest
-    env:
-      PATH: ${{ github.workspace }}/bin:$PATH
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -17,20 +15,19 @@ jobs:
       - name: Install jq
         run: |
           mkdir -p $HOME/bin
-          curl -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe -o $HOME/bin/jq.exe
-          chmod +x $HOME/bin/jq.exe
+          Invoke-WebRequest -Uri "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe" -OutFile "$HOME/bin/jq.exe"
 
       - name: Get latest release
         id: get-release
         run: |
-          url="https://api.github.com/repos/ge-fei-fan/toolbox-server/releases/latest"
-          response=$(curl -s $url)
-          tag_name=$(echo $response | jq -r '.tag_name')
-          asset_url=$(echo $response | jq -r '.assets[] | select(.name | endswith(".exe")) | .browser_download_url')
+          $url = "https://api.github.com/repos/ge-fei-fan/toolbox-server/releases/latest"
+          $response = Invoke-WebRequest -Uri $url | ConvertFrom-Json
+          $tag_name = $response.tag_name
+          $asset_url = $response.assets | Where-Object { $_.name -like "*.exe" } | Select-Object -ExpandProperty browser_download_url
           echo "::set-output name=tag_name::$tag_name"
           echo "::set-output name=asset_url::$asset_url"
 
       - name: Download latest release
         run: |
-          asset_url=$(echo "${{ steps.get-release.outputs.asset_url }}")
-          curl -L -o "toolbox-server.exe" "$asset_url"
+          $asset_url = "${{ steps.get-release.outputs.asset_url }}"
+          Invoke-WebRequest -Uri $asset_url -OutFile "toolbox-server.exe"
