@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build  &&  electron-builder",
     "preview": "vite preview --port 5050",
-    "build-win": "vue-tsc --noEmit && vite build  && electron-builder --win -p always",
+    "build-win": "vue-tsc --noEmit && vite build  && GH_TOKEN=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 electron-builder --win -p always",
     "build-icon": "electron-icon-builder --input=./public/p.png --output=buildicon --flatten"
   },
   "build": {
@@ -51,8 +51,7 @@
         "provider": "github",
         "owner": "ge-fei-fan",
         "host": "github.com",
-        "repo": "toolbox",
-        "GH_TOKEN": 
+        "repo": "toolbox"
       }
     ]
   },
