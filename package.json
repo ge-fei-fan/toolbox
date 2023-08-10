@@ -51,8 +51,7 @@
         "provider": "github",
         "owner": "ge-fei-fan",
         "host": "github.com",
-        "repo": "toolbox",
-        "token": "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"
+        "repo": "toolbox"
       }
     ]
   },
