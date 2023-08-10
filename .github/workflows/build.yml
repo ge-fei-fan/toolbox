@@ -51,8 +51,6 @@ jobs:
 
       - name: Build for Windows
         run: yarn build-win
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Get version
         id: get_version
