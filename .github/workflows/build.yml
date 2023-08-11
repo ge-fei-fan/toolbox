@@ -50,7 +50,9 @@ jobs:
         run: yarn install
 
       - name: Build for Windows
-        run: yarn build-win
+        run: yarn build-win -p always
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Get version
         id: get_version
