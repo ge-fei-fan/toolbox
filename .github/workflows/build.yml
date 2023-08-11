@@ -81,4 +81,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./release/*.exe ./release/*.yaml
           asset_name: ${{ github.run_number }}-${{ env.BUILD_ID }}-${{ env.BUILD_NUMBER }}-${{ env.BUILD_DATE }}-{file}
-
+          asset_content_type: application/octet-stream
