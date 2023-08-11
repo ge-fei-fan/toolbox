@@ -83,13 +83,14 @@ jobs:
       #     asset_name: ${{ github.run_number }}-${{ env.BUILD_ID }}-${{ env.BUILD_NUMBER }}-${{ env.BUILD_DATE }}-{file}
       #     asset_content_type: application/octet-stream
 
-      - name: Upload Assets
+      - name: Upload Release Files
         run: |
           for file in $(find ./release -name "*.exe" -o -name "*.yaml"); do
             filename=$(basename "$file")
-            curl -X POST \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Content-Type: $(file -b --mime-type "$file")" \
-              --data-binary @"$file" \
-              "${{ steps.create_release.outputs.upload_url }}?name=$filename"
+            curl \
+              --request POST \
+              --url "${{ steps.create_release.outputs.upload_url }}?name=$filename" \
+              --header "Authorization: Bearer ${{ secrets.RELEASE_TOKEN }}" \
+              --header "Content-Type: $(file -b --mime-type "$file")" \
+              --data-binary "@$file"
           done
