@@ -9,6 +9,7 @@ jobs:
   get-latest-toolbox-server:
     runs-on: windows-latest
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -52,7 +53,7 @@ jobs:
       - name: Build for Windows
         run: yarn build-win -p always
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Get version
         id: get_version
