@@ -51,7 +51,7 @@ jobs:
         run: yarn install
 
       - name: Build for Windows
-        run: yarn build-win -p always
+        run: yarn build-win 
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
