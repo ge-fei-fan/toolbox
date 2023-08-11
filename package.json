@@ -46,6 +46,10 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     },
+    "author": {
+      "name": "gefeifan",
+      "email": "754277710@qq.com"
+    },
     "publish": [
       {
         "provider": "github",
