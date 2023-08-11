@@ -72,13 +72,24 @@ jobs:
           draft: false
           prerelease: false
 
+      # - name: Upload Assets
+      #   id: upload_assets
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./release/*.exe ./release/*.yaml
+      #     asset_name: ${{ github.run_number }}-${{ env.BUILD_ID }}-${{ env.BUILD_NUMBER }}-${{ env.BUILD_DATE }}-{file}
+      #     asset_content_type: application/octet-stream
+
       - name: Upload Assets
-        id: upload_assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/*.exe ./release/*.yaml
-          asset_name: ${{ github.run_number }}-${{ env.BUILD_ID }}-${{ env.BUILD_NUMBER }}-${{ env.BUILD_DATE }}-{file}
-          asset_content_type: application/octet-stream
+        run: |
+          for file in $(find ./release -name "*.exe" -o -name "*.yaml"); do
+            filename=$(basename "$file")
+            curl -X POST \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Content-Type: $(file -b --mime-type "$file")" \
+              --data-binary @"$file" \
+              "${{ steps.create_release.outputs.upload_url }}?name=$filename"
+          done
