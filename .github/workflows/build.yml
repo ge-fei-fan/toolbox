@@ -51,26 +51,28 @@ jobs:
         run: yarn install
 
       - name: Build for Windows
-        run: yarn build-win 
+        # run: yarn build-win 
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.github_token }}
+        run: |
+          yarn build-win --publish always
         
-      - name: Get version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        shell: bash
+      # - name: Get version
+      #   id: get_version
+      #   run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      #   shell: bash
         
       # 从该tag打上一个release标签(这里会output一些参数 后面才能使用1)
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.get_version.outputs.VERSION }}
-          release_name: ${{ steps.get_version.outputs.VERSION }}
-          draft: false
-          prerelease: false
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ steps.get_version.outputs.VERSION }}
+      #     release_name: ${{ steps.get_version.outputs.VERSION }}
+      #     draft: false
+      #     prerelease: false
 
       # - name: Upload Assets
       #   id: upload_assets
@@ -83,14 +85,14 @@ jobs:
       #     asset_name: ${{ github.run_number }}-${{ env.BUILD_ID }}-${{ env.BUILD_NUMBER }}-${{ env.BUILD_DATE }}-{file}
       #     asset_content_type: application/octet-stream
 
-      - name: Upload Release Files
-        run: |
-          for file in $(find ./release -name "*.exe" -o -name "*.yaml"); do
-            filename=$(basename "$file")
-            curl \
-              --request POST \
-              --url "${{ steps.create_release.outputs.upload_url }}?name=$filename" \
-              --header "Authorization: Bearer ${{ secrets.RELEASE_TOKEN }}" \
-              --header "Content-Type: $(file -b --mime-type "$file")" \
-              --data-binary "@$file"
-          done
+      # - name: Upload Release Files
+      #   run: |
+      #     for file in $(find ./release -name "*.exe" -o -name "*.yaml"); do
+      #       filename=$(basename "$file")
+      #       curl \
+      #         --request POST \
+      #         --url "${{ steps.create_release.outputs.upload_url }}?name=$filename" \
+      #         --header "Authorization: Bearer ${{ secrets.RELEASE_TOKEN }}" \
+      #         --header "Content-Type: $(file -b --mime-type "$file")" \
+      #         --data-binary "@$file"
+      #     done

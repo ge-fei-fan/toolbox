@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build  &&  electron-builder",
     "preview": "vite preview --port 5050",
-    "build-win": "vue-tsc --noEmit && vite build  &&  electron-builder --win --publish never",
+    "build-win": "vue-tsc --noEmit && vite build  &&  electron-builder --win",
     "build-icon": "electron-icon-builder --input=./public/p.png --output=buildicon --flatten"
   },
   "build": {
