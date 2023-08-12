@@ -58,11 +58,16 @@ jobs:
           yarn build-win --publish never
           ls
 
-      - name: Get version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        shell: bash
-        
+      # - name: Get version
+      #   id: get_version
+      #   run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      #   shell: bash
+      - name: Get Version
+        id: version
+        run: echo "${{ github.ref }}" | sed 's/refs\/tags\///'
+      
+      - name: Print Version
+        run: echo "Version is ${{ steps.version.outputs.value }}"
       # 从该tag打上一个release标签(这里会output一些参数 后面才能使用1)
       - name: Create Release
         id: create_release
