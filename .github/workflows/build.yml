@@ -56,7 +56,8 @@ jobs:
           GH_TOKEN: ${{ secrets.github_token }}
         run: |
           yarn build-win --publish never
-                  
+          ls
+
       - name: Get version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
@@ -81,7 +82,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: release/**/*.exe
+          asset_path: release/*.exe
           asset_name: my-app.exe
           asset_content_type: application/octet-stream
 
