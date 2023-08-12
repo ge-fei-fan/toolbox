@@ -3,7 +3,7 @@ name: Get latest toolbox-server
 on:
   push:
     tags:
-    - v*
+    - **
     
 jobs:
   get-latest-toolbox-server:
