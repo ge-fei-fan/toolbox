@@ -51,7 +51,8 @@
         "provider": "github",
         "owner": "ge-fei-fan",
         "host": "github.com",
-        "repo": "toolbox"      }
+        "repo": "toolbox"      
+      }
     ]
   },
   "dependencies": {
