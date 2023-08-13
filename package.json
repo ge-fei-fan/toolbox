@@ -1,6 +1,6 @@
 {
   "name": "toolbox",
-  "version": "1.0.40",
+  "version": "1.0.44",
   "license": "MIT",
   "main": "dist-electron/index.js",
   "scripts": {

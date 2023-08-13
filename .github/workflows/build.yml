@@ -31,73 +31,82 @@ jobs:
       - name: Download latest release
         run: |
           $asset_url = "${{ steps.get-release.outputs.asset_url }}"
-          Invoke-WebRequest -Uri $asset_url -OutFile "toolbox-server.test.exe"
+          Invoke-WebRequest -Uri $asset_url -OutFile "toolbox-server.exe"
 
       - name: Move toolbox-server.exe to engine directory
         run: |
           # move  "toolbox-server.exe" "engine/"
-          xcopy /Y toolbox-server.test.exe engine\
+          xcopy /Y toolbox-server.exe engine\
+      
+      - name: Download ffmpeg
+        run: |
+          $asset_url = "https://cloud.geff.top/d/gege/ffmpeg.exe"
+          Invoke-WebRequest -Uri $asset_url -OutFile "ffmpeg.exe"
+  
+      - name: Move toolbox-server.exe to engine directory
+        run: |
+          xcopy /Y ffmpeg.exe engine\
           cd engine
           ls
 
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
 
-      # - name: Install dependencies
-      #   run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
-      # - name: Build for Windows
-      #   # run: yarn build-win 
-      #   env:
-      #     GH_TOKEN: ${{ secrets.github_token }}
-      #   run: |
-      #     yarn build-win --publish never
-      #     ls
+      - name: Build for Windows
+        # run: yarn build-win 
+        env:
+          GH_TOKEN: ${{ secrets.github_token }}
+        run: |
+          yarn build-win --publish never
+          ls
 
-      # - name: Get version
-      #   id: get_version
-      #   run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      #   shell: bash
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        shell: bash
 
-      # # 从该tag打上一个release标签(这里会output一些参数 后面才能使用1)
-      # - name: Create Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ steps.get_version.outputs.VERSION }}
-      #     release_name: ${{ steps.get_version.outputs.VERSION }}
-      #     draft: false
-      #     prerelease: false
+      # 从该tag打上一个release标签(这里会output一些参数 后面才能使用1)
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: ${{ steps.get_version.outputs.VERSION }}
+          draft: false
+          prerelease: false
       
-      # - name: Set Version Number
-      #   id: set_version
-      #   run: echo "::set-output name=VERSION::$(echo ${{steps.get_version.outputs.VERSION}} | cut -c2-)"
+      - name: Set Version Number
+        id: set_version
+        run: echo "::set-output name=VERSION::$(echo ${{steps.get_version.outputs.VERSION}} | cut -c2-)"
           
-      # - name: Use Version Number
-      #   run: echo "Version number is ${{ steps.set_version.outputs.VERSION }}"
+      - name: Use Version Number
+        run: echo "Version number is ${{ steps.set_version.outputs.VERSION }}"
 
-      # - name: Upload Assets
-      #   id: upload_assets
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: ./release/toolbox-Setup-${{ steps.set_version.outputs.VERSION }}.exe
-      #     asset_name: toolbox-Setup-${{ steps.set_version.outputs.VERSION }}.exe
-      #     asset_content_type: application/octet-stream
+      - name: Upload Assets
+        id: upload_assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/toolbox-Setup-${{ steps.set_version.outputs.VERSION }}.exe
+          asset_name: toolbox-Setup-${{ steps.set_version.outputs.VERSION }}.exe
+          asset_content_type: application/octet-stream
 
-      # - name: Upload Yml
-      #   id: upload_yml
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: ./release/latest.yml
-      #     asset_name: latest.yml
-      #     asset_content_type: text/yaml
+      - name: Upload Yml
+        id: upload_yml
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/latest.yml
+          asset_name: latest.yml
+          asset_content_type: text/yaml
