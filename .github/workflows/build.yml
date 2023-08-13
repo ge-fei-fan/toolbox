@@ -13,50 +13,50 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Install jq
-      #   run: |
-      #     mkdir -p $HOME/bin
-      #     Invoke-WebRequest -Uri "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe" -OutFile "$HOME/bin/jq.exe"
+      - name: Install jq
+        run: |
+          mkdir -p $HOME/bin
+          Invoke-WebRequest -Uri "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe" -OutFile "$HOME/bin/jq.exe"
 
-      # - name: Get latest release
-      #   id: get-release
-      #   run: |
-      #     $url = "https://api.github.com/repos/ge-fei-fan/toolbox-server/releases/latest"
-      #     $response = Invoke-WebRequest -Uri $url | ConvertFrom-Json
-      #     $tag_name = $response.tag_name
-      #     $asset_url = $response.assets | Where-Object { $_.name -like "*.exe" } | Select-Object -ExpandProperty browser_download_url
-      #     echo "::set-output name=tag_name::$tag_name"
-      #     echo "::set-output name=asset_url::$asset_url"
+      - name: Get latest release
+        id: get-release
+        run: |
+          $url = "https://api.github.com/repos/ge-fei-fan/toolbox-server/releases/latest"
+          $response = Invoke-WebRequest -Uri $url | ConvertFrom-Json
+          $tag_name = $response.tag_name
+          $asset_url = $response.assets | Where-Object { $_.name -like "*.exe" } | Select-Object -ExpandProperty browser_download_url
+          echo "::set-output name=tag_name::$tag_name"
+          echo "::set-output name=asset_url::$asset_url"
 
-      # - name: Download latest release
-      #   run: |
-      #     $asset_url = "${{ steps.get-release.outputs.asset_url }}"
-      #     Invoke-WebRequest -Uri $asset_url -OutFile "toolbox-server.exe"
-      # - name: Download latest release
-      #   run: |
-      #     $asset_url = "${{ steps.get-release.outputs.asset_url }}"
-      #     Invoke-WebRequest -Uri $asset_url -OutFile "toolbox-server.exe"
+      - name: Download latest release
+        run: |
+          $asset_url = "${{ steps.get-release.outputs.asset_url }}"
+          Invoke-WebRequest -Uri $asset_url -OutFile "toolbox-server.exe"
+      - name: Download latest release
+        run: |
+          $asset_url = "${{ steps.get-release.outputs.asset_url }}"
+          Invoke-WebRequest -Uri $asset_url -OutFile "toolbox-server.exe"
 
-      # - name: Move toolbox-server.exe to engine directory
-      #   run: |
-      #     # move  "toolbox-server.exe" "engine/"
-      #     xcopy /Y toolbox-server.exe engine\
+      - name: Move toolbox-server.exe to engine directory
+        run: |
+          # move  "toolbox-server.exe" "engine/"
+          xcopy /Y toolbox-server.exe engine\
 
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
 
-      # - name: Install dependencies
-      #   run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
-      # - name: Build for Windows
-      #   # run: yarn build-win 
-      #   env:
-      #     GH_TOKEN: ${{ secrets.github_token }}
-      #   run: |
-      #     yarn build-win --publish never
-      #     ls
+      - name: Build for Windows
+        # run: yarn build-win 
+        env:
+          GH_TOKEN: ${{ secrets.github_token }}
+        run: |
+          yarn build-win --publish never
+          ls
 
       - name: Get version
         id: get_version
@@ -82,16 +82,16 @@ jobs:
       - name: Use Version Number
         run: echo "Version number is ${{ steps.set_version.outputs.VERSION }}"
 
-      # - name: Upload Assets
-      #   id: upload_assets
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: ./release/toolbox-Setup-${{ steps.version_num.outputs.VERSIONNUM }}.exe
-      #     asset_name: toolbox-Setup-${{ steps.version_num.outputs.VERSIONNUM }}.exe
-      #     asset_content_type: application/octet-stream
+      - name: Upload Assets
+        id: upload_assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/toolbox-Setup-${{ steps.set_version.outputs.VERSION }}.exe
+          asset_name: toolbox-Setup-${{ steps.set_version.outputs.VERSION }}.exe
+          asset_content_type: application/octet-stream
 
       # - name: Upload Release Files
       #   run: |
