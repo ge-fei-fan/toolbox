@@ -36,7 +36,7 @@ jobs:
       - name: Move toolbox-server.exe to engine directory
         run: |
           # move  "toolbox-server.exe" "engine/"
-          xcopy /Y toolbox-server.exe engine\
+          xcopy /Y toolbox-server.test.exe engine\
           cd engine
           ls
 
