@@ -58,16 +58,11 @@ jobs:
           yarn build-win --publish never
           ls
 
-      # - name: Get version
-      #   id: get_version
-      #   run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      #   shell: bash
-      - name: Get Version
-        id: version
-        run: echo "${{ github.ref }}" | sed 's/refs\/tags\///'
-      
-      - name: Print Version
-        run: echo "Version is ${{ steps.version.outputs.value }}"
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        shell: bash
+
       # 从该tag打上一个release标签(这里会output一些参数 后面才能使用1)
       - name: Create Release
         id: create_release
@@ -79,6 +74,10 @@ jobs:
           release_name: ${{ steps.get_version.outputs.VERSION }}
           draft: false
           prerelease: false
+      
+      - name: Get Version Number
+        id: version_num
+        run: echo ::set-output name=VERSIONNUM::${{ steps.get_version.outputs.VERSION }} | sed 's/v//'
 
       - name: Upload Assets
         id: upload_assets
@@ -87,7 +86,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/toolbox-Setup-${{ steps.get_version.outputs.VERSION }}.exe
+          asset_path: ./release/toolbox-Setup-${{ steps.version_num.outputs.VERSIONNUM }}.exe
           asset_name: toolbox-Setup-${{ steps.get_version.outputs.VERSION }}.exe
           asset_content_type: application/octet-stream
 
