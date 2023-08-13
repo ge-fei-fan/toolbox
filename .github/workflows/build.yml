@@ -93,14 +93,13 @@ jobs:
           asset_name: toolbox-Setup-${{ steps.set_version.outputs.VERSION }}.exe
           asset_content_type: application/octet-stream
 
-      # - name: Upload Release Files
-      #   run: |
-      #     for file in $(find ./release -name "*.exe" -o -name "*.yaml"); do
-      #       filename=$(basename "$file")
-      #       curl \
-      #         --request POST \
-      #         --url "${{ steps.create_release.outputs.upload_url }}?name=$filename" \
-      #         --header "Authorization: Bearer ${{ secrets.RELEASE_TOKEN }}" \
-      #         --header "Content-Type: $(file -b --mime-type "$file")" \
-      #         --data-binary "@$file"
-      #     done
+      - name: Upload Yml
+        id: upload_yml
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/latest.yml
+          asset_name: latest.yml
+          asset_content_type: text/yaml
