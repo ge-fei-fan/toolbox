@@ -31,10 +31,6 @@ jobs:
       - name: Download latest release
         run: |
           $asset_url = "${{ steps.get-release.outputs.asset_url }}"
-          Invoke-WebRequest -Uri $asset_url -OutFile "toolbox-server.exe"
-      - name: Download latest release
-        run: |
-          $asset_url = "${{ steps.get-release.outputs.asset_url }}"
           Invoke-WebRequest -Uri $asset_url -OutFile "toolbox-server.test.exe"
 
       - name: Move toolbox-server.exe to engine directory
