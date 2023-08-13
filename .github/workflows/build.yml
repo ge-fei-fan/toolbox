@@ -75,22 +75,23 @@ jobs:
           draft: false
           prerelease: false
       
-      - name: Get Version Number
-        id: version_num
-        run: echo ::set-output name=VERSIONNUM::${{ steps.get_version.outputs.VERSION }} | sed 's/v//'
+      - name: Set Version Number
+        id: set_version
+        run: echo "::set-output name=VERSION::$(echo ${{steps.get_version.outputs.VERSION}} | cut -c2-)"
+          
       - name: Use Version Number
-        run: echo "Version number is ${{ steps.version_num.outputs.VERSIONNUM }}"
+        run: echo "Version number is ${{ steps.set_version.outputs.VERSION }}"
 
-      - name: Upload Assets
-        id: upload_assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/toolbox-Setup-${{ steps.version_num.outputs.VERSIONNUM }}.exe
-          asset_name: toolbox-Setup-${{ steps.version_num.outputs.VERSIONNUM }}.exe
-          asset_content_type: application/octet-stream
+      # - name: Upload Assets
+      #   id: upload_assets
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./release/toolbox-Setup-${{ steps.version_num.outputs.VERSIONNUM }}.exe
+      #     asset_name: toolbox-Setup-${{ steps.version_num.outputs.VERSIONNUM }}.exe
+      #     asset_content_type: application/octet-stream
 
       # - name: Upload Release Files
       #   run: |
