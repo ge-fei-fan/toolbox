@@ -68,12 +68,12 @@ export function useMenu() {
                     icon: List,
                     theme: 'outline',
                 },
-                {
-                    name: "哪吒探针",
-                    key: "tanzhen",
-                    icon: Server,
-                    theme: 'outline',
-                },
+                // {
+                //     name: "哪吒探针",
+                //     key: "tanzhen",
+                //     icon: Server,
+                //     theme: 'outline',
+                // },
                 
             ]
         },
@@ -94,6 +94,8 @@ export function useMenu() {
 
 
     const click = async (menu: IMenu) => {
+        const r = router.resolve({ name: menu.key });
+        console.log(r.href)
         await router.push({name: menu.key, replace: true,})
     };
 

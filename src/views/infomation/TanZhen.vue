@@ -1,17 +1,18 @@
 <template>
     <div class="h-screen w-full">
-        <iframe  id="my-webview" src="https://nz.geff.top/">
-        </iframe >
+      <Clock/>
     </div>
 </template>
   
-  <script setup lang="ts">
- import { defineComponent } from 'vue'
-
-    // export default defineComponent({
-    // name: 'MyWebview',
-    // })
-  </script>
+<script setup lang="ts">
+  import Clock  from '@/components/common/Clock.vue'
+  import { useRouter } from 'vue-router'
+  const $router = useRouter()
+  console.log($router.currentRoute.value)
+  // export default defineComponent({
+  // name: 'MyWebview',
+  // })
+</script>
     
   
   <style lang="scss">

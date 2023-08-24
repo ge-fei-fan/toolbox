@@ -21,7 +21,7 @@
     </div>
     <div class="flex gap-3 col-start-4 justify-end mr-6">
       <IconPark @click="windowMin" class="cursor-pointer" :icon="Minus" size="22" theme="outline"/>
-      <IconPark class="cursor-pointer" :icon="InternalReduction" size="20" theme="outline"/>
+      <IconPark @click="miniWin" class="cursor-pointer" :icon="InternalReduction" size="20" theme="outline"/>
       <IconPark @click="windowClose" class="cursor-pointer" :icon="CloseSmall" size="22" theme="outline"/>
     </div>
   </div>
@@ -42,6 +42,9 @@
   })
   const windowMin=()=>{
     ipcRenderer.send("window-min")
+  }
+  const miniWin=()=>{
+    ipcRenderer.send("miniwindow-open")
   }
   const windowClose=()=>{
     ipcRenderer.send("window-close")

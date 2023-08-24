@@ -1,6 +1,8 @@
 import axios, {type AxiosRequestConfig} from "axios";
 import { loadConfigYaml } from "./navite";
 import is from "electron-is";
+import { ipcRenderer } from "electron";
+import { shutdownServer } from "./api";
 
 
 let port:any = 0
@@ -50,7 +52,10 @@ axios.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-
+ipcRenderer.on("shutdownServer", (event, arg) => {
+    console.log('[app] shutdownServer')
+    shutdownServer()
+});
 interface ResType<T> {
     code: number;
     data?: T;

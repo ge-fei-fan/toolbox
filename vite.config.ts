@@ -8,7 +8,7 @@ import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
 
 import electron from 'vite-plugin-electron'
 import renderer  from 'vite-plugin-electron-renderer'
-
+import postcssNesting from 'postcss-nesting';
 
 export default defineConfig({
     plugins: [
@@ -18,6 +18,7 @@ export default defineConfig({
         }),
         renderer(),
         vueJsx(),
+        postcssNesting(),
         AutoImport({
             resolvers: [ElementPlusResolver()],
         }),
@@ -29,7 +30,7 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url)),
         }
     },
-    //base:'/vue3-music/',
+    // base:'. /',
     build: {
         outDir: 'dist',
     },

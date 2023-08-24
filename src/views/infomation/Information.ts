@@ -7,7 +7,7 @@ export function useInformation() {
     const serverStatus = ref("停用")
     const checkServer =async ()=>{
         try{
-            const res = await InfoStore.bilibiliAccount().catch()
+            const res = await InfoStore.systemHealth().catch()
             if(res){
                 serverStatus.value = "启用"
             }else{
@@ -21,5 +21,6 @@ export function useInformation() {
     return {
         serverStatus,
         checkServer,
+        
     }
 }

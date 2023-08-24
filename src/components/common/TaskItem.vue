@@ -84,7 +84,7 @@ defineProps<{
   quality:string,
 }>()
 const AccountStore =  useBiliAccountStore()
-const {reFresh} = useBiliMenu()
+const BiliMenu = useBiliMenu()
 const  Click = async (id:number)=>{
     info.value = true
     const res = await useVideoDetail(id)
@@ -130,10 +130,10 @@ const openDirectory =async (p:string) => {
 const deleteItem=async (params:number) => {
     const res = await useDeleteItem(params)
     if (res.code==0){
+        await BiliMenu.reFresh()
         ElMessage.success({
             message:res.msg,
         });
-        reFresh()
     }else {
         ElMessage.error({
             message:res.msg,

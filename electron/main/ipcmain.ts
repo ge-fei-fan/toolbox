@@ -1,5 +1,6 @@
-import { dialog, ipcMain } from "electron";
+import { dialog, ipcMain,screen } from "electron";
 import {win} from "./index"
+import {miniWin} from "./miniwin"
 
 export default function initIpc() {
     ipcMain.on("video-MessageBox", (e, msg) => {  
@@ -42,5 +43,35 @@ export default function initIpc() {
     ipcMain.on('window-close',(e, msg) => {
         win?.close();
     })
-      
+    ipcMain.on('miniwindow-open',(e, msg) => {
+        win?.hide();
+        miniWin?.show()
+    })
+    ipcMain.on("fullWin",(e, msg) => {
+        win?.show()
+        miniWin?.hide()
+    })  
+    ipcMain.on("hideMiniWin",(e, msg) => {
+        miniWin?.hide()
+    })
+    ipcMain.on("exit",(e, msg) => {
+        win?.webContents.send("shutdownServer","closeServer");
+        miniWin?.destroy();
+        win?.destroy()
+    })
+    
+    // 移动窗口----start
+    ipcMain.on("win-start", (e) => {
+        const winPosition = miniWin!.getPosition();
+        const cursorPosition = screen.getCursorScreenPoint();
+        let x = cursorPosition.x - winPosition[0];
+        let y = cursorPosition.y - winPosition[1];
+        e.returnValue = JSON.stringify({ x, y });
+    });
+    ipcMain.on("win-move", (_, params) => {
+        miniWin?.setContentSize(320,80)
+        const param = JSON.parse(params);
+        miniWin!.setPosition(param.x, param.y, true);
+    });
+  // 移动窗口----end  
 }

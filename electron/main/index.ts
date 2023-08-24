@@ -1,19 +1,19 @@
-import { app, BrowserWindow,  Menu,  Tray } from 'electron'
+import { app, BrowserWindow,  ipcMain,  Menu,  Tray } from 'electron'
 import path from 'path'
 import {  join } from 'path'
 import {startEngine} from './engine';
 import initIpc from './ipcmain';
 import initUpload from './Upload';
 import is from 'electron-is';
+import { CreateMiniWin, miniWin } from './miniwin';
 // import { initialize } from '@electron/remote/main'
 //app 控制应用程序的事件生命周期。
 //BrowserWindow 创建并控制浏览器窗口。
-process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
+// process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
 
-export let win: BrowserWindow | null;
+export let win: BrowserWindow | undefined;
 //定义全局变量获取 窗口实例
 const preload = join(__dirname, '../preload/index.js')
-
 
 
 const createWindow = () => {
@@ -33,8 +33,10 @@ const createWindow = () => {
             //允许html页面上的javascipt代码访问nodejs 环境api代码的能力（与node集成的意思）
         }
     })
+    
     require('@electron/remote/main').initialize()
     require('@electron/remote/main').enable(win.webContents)
+    
     if (app.isPackaged) {
         win.loadFile(path.join(__dirname, "../dist/index.html"));
         // win.webContents.openDevTools();
@@ -44,6 +46,7 @@ const createWindow = () => {
         win.loadURL("http://localhost:3002/");
         win.webContents.openDevTools();
     }
+    
     win.setMenu(null); 
     // // 窗口关闭的监听  
     // win.on('closed', (event) => {
@@ -73,7 +76,13 @@ const createWindow = () => {
     },
     {
         label: '退出',
-        click: () => { win?.destroy() }
+        // click: () => { win?.destroy() }
+        click: () => {
+            win?.webContents.send("shutdownServer","closeServer");
+            miniWin?.destroy();
+            win?.destroy()
+            // app.quit() 
+        }
     }
     ]);
     // 载入托盘菜单
@@ -88,14 +97,21 @@ const createWindow = () => {
         win?.isVisible() ? win.hide() : win?.show()
         win?.isVisible() ? win.setSkipTaskbar(false) : win?.setSkipTaskbar(true);
     });
+    win.hookWindowMessage(278,function(e){
+        win?.setEnabled(false);//窗口禁用
+    setTimeout(()=>{
+        win?.setEnabled(true);//窗口启用
+    },100);
+    return true;
+    })
 
     initIpc()
     initUpload()
- 
+    CreateMiniWin()
     Object.defineProperty(app, 'isPackaged', {
-    get() {
-        return true;
-    }
+        get() {
+            return true;
+        }
     });
     
 }

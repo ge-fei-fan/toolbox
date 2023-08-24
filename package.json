@@ -11,9 +11,9 @@
     "build-icon": "electron-icon-builder --input=./public/p.png --output=buildicon --flatten"
   },
   "build": {
-    "appId": "app.toolbox.desktop", 
-    "productName": "toolbox", 
-    "files": [ 
+    "appId": "app.toolbox.desktop",
+    "productName": "toolbox",
+    "files": [
       "dist-electron",
       "dist"
     ],
@@ -23,7 +23,7 @@
     },
     "win": {
       "icon": "public/icon.ico",
-      "artifactName": "${productName}-Setup-${version}.${ext}", 
+      "artifactName": "${productName}-Setup-${version}.${ext}",
       "target": [
         {
           "target": "nsis",
@@ -51,7 +51,7 @@
         "provider": "github",
         "owner": "ge-fei-fan",
         "host": "github.com",
-        "repo": "toolbox"      
+        "repo": "toolbox"
       }
     ]
   },
@@ -60,6 +60,7 @@
     "@icon-park/vue-next": "^1.3.6",
     "axios": "^0.26.0",
     "dayjs": "^1.10.8",
+    "electron-updater": "^6.1.1",
     "element-plus": "^2.3.6",
     "lodash": "^4.17.21",
     "pinia": "^2.0.11",
@@ -67,8 +68,7 @@
     "swiper": "^8.0.6",
     "update-electron-app": "^2.0.1",
     "vue": "^3.2.31",
-    "vue-router": "^4.0.12",
-    "electron-updater": "^6.1.1"
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@electron-forge/publisher-github": "^6.2.1",
@@ -89,6 +89,7 @@
     "electron-log": "^4.4.8",
     "electron-updater": "^6.1.1",
     "postcss": "^8.4.7",
+    "postcss-nesting": "^12.0.1",
     "sass": "^1.49.9",
     "tailwindcss": "^3.0.23",
     "typescript": "~4.5.5",
@@ -97,6 +98,7 @@
     "vite": "^2.8.4",
     "vite-plugin-electron": "^0.11.2",
     "vite-plugin-electron-renderer": "^0.14.1",
+    "vue-property-decorator": "^9.1.2",
     "vue-tsc": "^0.31.4",
     "yaml": "^2.3.1"
   }

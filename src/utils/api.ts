@@ -4,6 +4,7 @@ import type {  SysConfig,Weather } from "@/models/config";
 import type { crontabList } from "@/models/crontab";
 
 
+
 export async function usebilibiliAccount() {
     return await http.get<{
         code: number,
@@ -159,8 +160,7 @@ export   async function useCreateCron(funcname:string,tag:string,cron:string){
 
 export async function shutdownServer() {
     return await http.get<{ 
-        code: number,
-        msg:string,
+        // msg:string,
     }>('/system/shutdown')   
 }
 export async function Health() {
@@ -168,7 +168,16 @@ export async function Health() {
         // msg:string,
     }>('/health')   
 }
-
+interface Version{
+    "version":string
+}
+export async function useVersion() {
+    return await http.get<{ 
+        code:number,
+        msg:string,
+        data:Version
+    }>('/system/version')   
+}
 //获取天气
 export async function Weather() {
     return await http.get<{ 

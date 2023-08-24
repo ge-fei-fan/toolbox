@@ -8,6 +8,7 @@ interface IMenu {
     label: string,
     name: string,
 }
+const currentMenu = ref("Downloading")
 export function useBiliMenu() {
     const menus: IMenu[] = [
         {
@@ -22,9 +23,8 @@ export function useBiliMenu() {
 
     const router = useRouter();
     const route = useRoute();
-
     // const currentMenu = ref(route.name)
-    const currentMenu = ref("Downloading")
+    // const currentMenu = ref("Downloading")
 
     // watch(() => route.name, m => {
     //     currentMenu.value = m
@@ -51,6 +51,7 @@ export function useBiliMenu() {
     }
     
     const reFresh = ()=>{
+        console.log(currentMenu.value)
         if(currentMenu.value == "Downloaded"){
             AccountStore.videlist(0)
         }

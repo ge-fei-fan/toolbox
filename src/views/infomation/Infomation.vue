@@ -11,6 +11,10 @@
               title="服务器状态"
              :text="serverStatus"
             ></IconText>
+            <IconText
+              title="服务器版本"
+             :text="version"
+            ></IconText>
         </div>
     </div>
     <div class="rounded-lg shadow bg-gray-200 ">
@@ -23,23 +27,30 @@
             
         </div>
     </div>
-    
+
   </div>
 </template>
 
 <script setup lang="ts">
- import {Computer} from "@/assets/img";
- import IconText  from '@/components/common/IconText.vue'
+import {Computer} from "@/assets/img";
+import IconText  from '@/components/common/IconText.vue'
+import {storeToRefs} from "pinia";
 import { onMounted } from "vue";
 import { useInformation } from "./Information";
+import { useInfoStore } from "@/stores/information";
+const {version}= storeToRefs(useInfoStore())
+const InfoStore =  useInfoStore()
+
 const {checkServer,serverStatus} = useInformation()
- const a:string="测试"
- onMounted(async () => {
+const a:string="测试"
+onMounted(async () => {
   checkServer()
- })
+  await InfoStore.systemVersion()
+
+})
+
 </script>
   
 
-<style lang="scss">
-
+<style>
 </style>

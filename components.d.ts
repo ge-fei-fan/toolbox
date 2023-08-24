@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Clock: typeof import('./src/components/common/Clock.vue')['default']
     CoverPlay: typeof import('./src/components/common/CoverPlay.vue')['default']
     CronItem: typeof import('./src/components/common/CronItem.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
