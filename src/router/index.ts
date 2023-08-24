@@ -66,7 +66,7 @@ const router = createRouter({
                 {
                 path: 'clockmini',
                 name: 'clockmini',
-                component: () => import("@/views/miniWin/clockmini.vue"),
+                component: () => import("@/views/miniWin/Clockmini.vue"),
                 meta: {
                     menu: 'clockmini',
                     keepAlive: true,

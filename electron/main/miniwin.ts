@@ -27,12 +27,16 @@ export  function CreateMiniWin(){
     })
     require('@electron/remote/main').enable(miniWin.webContents)
     if (!is.dev()) {
-        miniWin.loadFile(path.join(__dirname, "../dist/index.html"));
+        miniWin.loadFile(path.join(__dirname, "../dist/index.html"), {
+            hash: "/mini/clockmini"
+          });
         // miniWin.webContents.openDevTools();
     } else {
 //VITE_DEV_SERVER_HOST 如果是undefined 换成  VITE_DEV_SERVER_HOSTNAME
         // win.loadURL(`http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_DEV_SERVER_PORT']}`)
         miniWin.loadURL("http://localhost:3002/#/mini/clockmini");
+        // miniWin.loadFile(path.join(__dirname, "../dist/index.html"));
+        
         miniWin.webContents.openDevTools();
     }
     miniWin.setSkipTaskbar(true)

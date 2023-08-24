@@ -167,6 +167,7 @@
   const rightmenu =  Menu.buildFromTemplate(menuTemplate);
   const rightClickManager = RightClickManager.getInstance(rightmenu);
   onMounted(async () => {
+    currentMenu.value='Downloading'
     AccountStore.videlist(1);
     videoIsEmpty();
     await AccountStore.bilibiliAccount();
