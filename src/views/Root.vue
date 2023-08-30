@@ -25,9 +25,11 @@
 <script setup lang="ts">
 
 import Menu from "@/components/layout/menu/Menu.vue";
+import { userClipboardInit } from "@/utils/clipboard";
 import { onMounted } from "vue";
 onMounted( () => {
   // window.document.documentElement.setAttribute('class', 'dark');
+  userClipboardInit()
 })
 </script>
 <style lang="scss">
